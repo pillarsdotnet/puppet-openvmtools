@@ -100,8 +100,9 @@ class openvmtools (
   }
 
   if $facts['virtual'] == 'vmware' {
+    notify { 'vmware host found': message => 'vmware host found' }
     if $supported {
-
+      notify { 'supported operating system': message => 'supported operating system' }
       $packages = $with_desktop ? {
         true    => $desktop_package_conflicts ? {
           true    => [ $desktop_package_name ],
@@ -109,13 +110,16 @@ class openvmtools (
         },
         default => [ $package_name ],
       }
+      notify { 'packages': message => '$packages = [%s]'.sprintf($packages.join(',')) }
 
       if $manage_epel {
+        notify { 'including epel': message => 'including epel' }
         include epel
         Yumrepo['epel'] -> Package[$package_name]
       }
 
       if $facts['vmware_uninstaller'] =~ Stdlib::Unixpath {
+        notify { 'Found uninstaller': message => 'Found %s'.sprintf($facts['vmware_uninstaller']) }
         $vmware_lib = $facts['vmware_uninstaller'].regex_replace(
           'bin/vmware-uninstall-tools.pl',
           'lib/vmware-tools'
@@ -126,15 +130,20 @@ class openvmtools (
         }
       }
 
+      notify { 'Ensuring package VMwareTools is absent.': message => 'Ensuring package VMwareTools is absent.' }
       package { 'VMwareTools':
         ensure  => 'absent',
         before  => Package[$packages],
       }
 
+      notify { 'Ensuring packages': message => 'Ensuring [%s] are %s'.sprintf($packages.join(','),$package_ensure) }
       package { $packages:
         ensure => $package_ensure,
       }
 
+      [$service_name].flatten.each |$name| {
+        notify { 'Ensuring service': message => 'Ensuring service %s is %s'.sprintf($name,$service_ensure_real) }
+      }
       service { $service_name:
         ensure    => $service_ensure_real,
         enable    => $service_enable,
@@ -144,11 +153,12 @@ class openvmtools (
       }
 
     } else {  # $supported == false
-      notice(
-        "Your operating system ${facts['os']['name']} \
+      notify { 'unsupported': message => "Your operating system ${facts['os']['name']} \
          ${facts['os']['release']['full']} is unsupported and will not have the \
-         Open Virtual Machine Tools installed."
-      )
+         Open Virtual Machine Tools installed." }
     }
   }  # $facts['virtual'] == 'vmware'
+  else {
+    notify{ 'Not a vmware host': message => 'Not a vmware host' }
+  }
 }
