@@ -1,8 +1,6 @@
 # Open Virtual Machine Tools
 
-[![Build Status](https://secure.travis-ci.org/razorsedge/puppet-openvmtools.png?branch=master)](http://travis-ci.org/razorsedge/puppet-openvmtools)
-
-#### Table of Contents
+## Table of Contents
 
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
@@ -135,31 +133,24 @@ Default: vmtoolsd
 open-vm-tools is available with these operating systems:
 
 * Debian 7.x and later releases
-* Recent Ubuntu releases (12.04 LTS, 13.10 and later)
+* Ubuntu 12.04 LTS and later releases
 * openSUSE 11.x and later releases
 * SUSE Linux Enterprise 12 and later releases
 * Fedora 19 and later releases
-* Red Hat Enterprise Linux 7.0 and later releases
-* CentOS 7 
-* Oracle Linux 7
-
-### Notes:
-
-* No other VM tools (ie [Operating System Specific Packages](http://packages.vmware.com/)) will be supported.  Use [razorsedge/vmwaretools](https://forge.puppetlabs.com/razorsedge/vmwaretools) instead.
-
-### Issues:
-
-* None
+* Red Hat Enterprise Linux 6.0 and later releases
+* CentOS 6 and later releases
+* Oracle Linux 6 and later releases
+* FreeBSD 10 and later releases
 
 ## Development
 
 Please see [CONTRIBUTING.md](CONTRIBUTING.md) for information on how to contribute.
 
-Copyright (C) 2015 Mike Arnold <mike@razorsedge.org>
+Copyright (C) 2017 Vox Pupuli
 
 Licensed under the Apache License, Version 2.0.
 
-[razorsedge/puppet-openvmtools on GitHub](https://github.com/razorsedge/puppet-openvmtools)
+[voxpupuli/puppet-openvmtools on GitHub](https://github.com/voxpupuli/puppet-openvmtools)
 
-[razorsedge/openvmtools on Puppet Forge](https://forge.puppetlabs.com/razorsedge/openvmtools)
+[voxpupuli/openvmtools on Puppet Forge](https://forge.puppetlabs.com/voxpupuli/openvmtools)
 

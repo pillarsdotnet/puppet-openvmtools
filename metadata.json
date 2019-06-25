@@ -1,57 +1,60 @@
 {
-  "name": "razorsedge-openvmtools",
-  "version": "1.1.0",
-  "author": "razorsedge",
+  "name": "puppet-openvmtools",
+  "version": "2.0.0",
+  "author": "Vox Pupuli <voxpupuli@groups.io>",
   "summary": "Install Open Virtual Machine Tools packages on VMware guests.",
   "license": "Apache-2.0",
-  "source": "https://github.com/razorsedge/puppet-openvmtools.git",
-  "project_page": "https://github.com/razorsedge/puppet-openvmtools",
-  "issues_url": "https://github.com/razorsedge/puppet-openvmtools/issues",
+  "source": "https://github.com/voxpupuli/puppet-openvmtools.git",
+  "project_page": "https://github.com/voxpupuli/puppet-openvmtools",
+  "issues_url": "https://github.com/voxpupuli/puppet-openvmtools/issues",
   "tags": [ "virtualization", "vmware", "vmware-tools", "vmware_tools", "vmtools", "open-vm-tools" ],
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">=2.3.0 <5.0.0"
+      "version_requirement": ">=2.3.0 <7.0.0"
+    },
+    { "name": "stahnma/epel",
+      "version_requirement": ">=1.2.2 <2.0.0"
     }
   ],
   "operatingsystem_support": [
     {
       "operatingsystem": "Fedora",
-      "operatingsystemrelease": [ "19", "20", "21" ]
+      "operatingsystemrelease": [ "19", "20", "21", "22", "23", "24", "25" ]
     },
     {
       "operatingsystem": "Debian",
-      "operatingsystemrelease": [ "7" ]
+      "operatingsystemrelease": [ "7", "8", "9" ]
     },
     {
       "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": [ "12.04", "14.04" ]
+      "operatingsystemrelease": [ "12.04", "14.04", "16.04", "18.04" ]
     },
     {
       "operatingsystem": "OpenSUSE",
-      "operatingsystemrelease": [ "11" ]
+      "operatingsystemrelease": [ "11", "12", "13", "42", "15" ]
     },
     {
       "operatingsystem": "SLES",
-      "operatingsystemrelease": [ "12" ]
+      "operatingsystemrelease": [ "12", "13", "14", "15" ]
     },
     {
       "operatingsystem": "RedHat",
-      "operatingsystemrelease": [ "7" ]
+      "operatingsystemrelease": [ "6", "7", "8" ]
     },
     {
       "operatingsystem": "CentOS",
-      "operatingsystemrelease": [ "7" ]
+      "operatingsystemrelease": [ "6", "7", "8" ]
     },
     {
       "operatingsystem": "OracleLinux",
-      "operatingsystemrelease": [ "7" ]
+      "operatingsystemrelease": [ "6", "7", "8" ]
     }
   ],
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">=2.7.20 <5.0.0"
+      "version_requirement": ">=4.10.0 <7.0.0"
     }
   ]
 }

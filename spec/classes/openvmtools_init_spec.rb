@@ -32,7 +32,7 @@ describe 'openvmtools', :type => 'class' do
     it { should_not contain_service('vmtoolsd') }
   end
 
-  context 'on a supported osfamily, vmware platform, non-supported operatingsystem' do
+  context 'on a supported osfamily, vmware platform, using EPEL' do
     let(:params) {{}}
     let :facts do {
       :virtual                   => 'vmware',
@@ -40,6 +40,29 @@ describe 'openvmtools', :type => 'class' do
       :operatingsystem           => 'RedHat',
       :operatingsystemrelease    => '6.0',
       :operatingsystemmajrelease => '6'
+    }
+    end
+    it { should contain_class('epel') }
+    it { should contain_yumrepo('epel').that_comes_before('Package[open-vm-tools]') }
+    it { should contain_package('open-vm-tools') }
+    it { should_not contain_package('open-vm-tools-desktop') }
+    it { should contain_service('vmtoolsd').with(
+      :ensure    => 'running',
+      :enable    => true,
+      :hasstatus => true,
+      :pattern   => 'vmtoolsd',
+      :require   => 'Package[open-vm-tools]'
+    )}
+  end
+
+  context 'on a supported osfamily, vmware platform, non-supported operatingsystem' do
+    let(:params) {{}}
+    let :facts do {
+      :virtual                   => 'vmware',
+      :osfamily                  => 'RedHat',
+      :operatingsystem           => 'RedHat',
+      :operatingsystemrelease    => '5.3',
+      :operatingsystemmajrelease => '5'
     }
     end
     it { should_not contain_package('open-vm-tools') }
@@ -89,7 +112,49 @@ describe 'openvmtools', :type => 'class' do
     )}
   end
 
-  context 'on a supported operatingsystem, vmware platform, custom parameters' do
+  context 'on a supported osfamily, vmware platform, default parameters, FreeBSD 10' do
+    let(:params) {{}}
+    let :facts do {
+      :virtual                   => 'vmware',
+      :osfamily                  => 'FreeBSD',
+      :operatingsystem           => 'FreeBSD',
+      :operatingsystemrelease    => '10.4-RELEASE',
+      :operatingsystemmajrelease => '10'
+    }
+    end
+    it { should contain_package('open-vm-tools-nox11') }
+    it { should_not contain_package('open-vm-tools') }
+    it { should contain_service('vmware_guestd').with(
+      :ensure    => 'running',
+      :enable    => true,
+      :hasstatus => true,
+      :pattern   => 'vmtoolsd',
+      :require   => 'Package[open-vm-tools-nox11]'
+    )}
+  end
+
+  context 'on a supported osfamily, vmware platform, default parameters, FreeBSD 11' do
+    let(:params) {{}}
+    let :facts do {
+      :virtual                   => 'vmware',
+      :osfamily                  => 'FreeBSD',
+      :operatingsystem           => 'FreeBSD',
+      :operatingsystemrelease    => '11.2-RELEASE',
+      :operatingsystemmajrelease => '11'
+    }
+    end
+    it { should contain_package('open-vm-tools-nox11') }
+    it { should_not contain_package('open-vm-tools') }
+    it { should contain_service('vmware_guestd').with(
+      :ensure    => 'running',
+      :enable    => true,
+      :hasstatus => true,
+      :pattern   => 'vmtoolsd',
+      :require   => 'Package[open-vm-tools-nox11]'
+    )}
+  end
+
+  context 'on a supported operatingsystem, vmware platform, custom parameters, RedHat' do
     let :facts do {
       :virtual                   => 'vmware',
       :osfamily                  => 'RedHat',
@@ -108,6 +173,36 @@ describe 'openvmtools', :type => 'class' do
     describe 'with_desktop => true' do
       let(:params) {{ :with_desktop => true }}
       it { should contain_package('open-vm-tools-desktop').with_ensure('present') }
+    end
+  end
+
+  context 'on a supported operatingsystem, vmware platform, custom parameters, FreeBSD' do
+    let :facts do {
+      :virtual                   => 'vmware',
+      :osfamily                  => 'FreeBSD',
+      :operatingsystem           => 'FreeBSD',
+      :operatingsystemrelease    => '11.2-RELEASE',
+      :operatingsystemmajrelease => '11'
+    }
+    end
+
+    describe 'ensure => absent' do
+      let(:params) {{ :ensure => 'absent' }}
+      it { should contain_package('open-vm-tools-nox11').with_ensure('absent') }
+      it { should contain_service('vmware_guestd').with_ensure('stopped') }
+    end
+
+    describe 'with_desktop => true' do
+      let(:params) {{ :with_desktop => true }}
+      it { should contain_package('open-vm-tools') }
+      it { should_not contain_package('open-vm-tools-nox11') }
+      it { should contain_service('vmware_guestd').with(
+	:ensure    => 'running',
+	:enable    => true,
+	:hasstatus => true,
+	:pattern   => 'vmtoolsd',
+	:require   => 'Package[open-vm-tools]'
+      )}
     end
   end
 
