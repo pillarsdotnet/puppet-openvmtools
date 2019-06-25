@@ -142,7 +142,7 @@ class openvmtools (
       }
 
       [$service_name].flatten.each |$name| {
-        notify { 'Ensuring service': message => 'Ensuring service %s is %s'.sprintf($name,$service_ensure_real) }
+        notify { "Ensuring service ${name}": message => 'Ensuring service %s is %s'.sprintf($name,$service_ensure_real) }
       }
       service { $service_name:
         ensure    => $service_ensure_real,
